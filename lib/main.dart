@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.settings),
             onPressed: (){
 //              TODO Setting
+              _setHost();
             },
           ),
           IconButton(
@@ -104,7 +105,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future ChangeLEDStatus(int led, bool status) async {
-    String host = '192.168.1.101';
+//    String host = '192.168.1.101';
+    String host = '';
+    if (host == ''){
+      return _setHost();
+    }
 //    TODO from sf
     //  /?pin=OFF2
     //  /?pin=ON2
@@ -114,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }else {
       url = 'http://$host/?pin=OFF$led';
     }
+    //TODO exception
     await http.get(url);
   }
 
@@ -124,4 +130,39 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     await intent.launch();
   }
+
+  _setHost() async {
+    TextEditingController _host_controller =
+    TextEditingController.fromValue(TextEditingValue(text: "192.168.0.2"));
+    return showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+            title: Text("设置ESP8266的IP："),
+            content: ListView(
+              children: <Widget>[
+                TextFormField(
+                  controller: _host_controller,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(10.0),
+                    labelText: 'ESP8266 的IP',
+                  ),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("取消"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text("确定"),
+                onPressed: () {
+//TODO
+                },
+              )
+            ]));
+  }
+
 }
