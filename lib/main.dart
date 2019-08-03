@@ -39,7 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: (){
-//              TODO Setting
               _setHost();
             },
           ),
@@ -65,10 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('LED1'),
                   Switch(
                     onChanged: (_){
-                      //TODO http request
-                      ChangeLEDStatus(1,!led1);
-                      setState(() {
-                        led1 = !led1;
+                      ChangeLEDStatus(1,!led1).then((_){
+                        setState(() {
+                          led1 = !led1;
+                        });
                       });
                     },
                     value: led1,
@@ -85,10 +84,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('LED2'),
                   Switch(
                     onChanged: (_){
-                      //TODO http request
-                      ChangeLEDStatus(2,!led2);
-                      setState(() {
-                        led2 = !led2;
+                      ChangeLEDStatus(2,!led2).then((_){
+                        setState(() {
+                          led2 = !led2;
+                        });
                       });
                     },
                     value: led2,
@@ -106,11 +105,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future ChangeLEDStatus(int led, bool status) async {
 //    String host = '192.168.1.101';
-    String host = '';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String host = prefs.getString("host")??'';
     if (host == ''){
+      setState(() {
+        if(led == 1){
+          led1 = !led1;
+        }else{
+          led2 = !led2;
+        }
+      });
       return _setHost();
     }
-//    TODO from sf
     //  /?pin=OFF2
     //  /?pin=ON2
     var url = '';
@@ -132,8 +138,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _setHost() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String host = prefs.getString("host")??'192.168.0.2';
     TextEditingController _host_controller =
-    TextEditingController.fromValue(TextEditingValue(text: "192.168.0.2"));
+    TextEditingController.fromValue(TextEditingValue(text: host));
     return showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -158,8 +166,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               FlatButton(
                 child: Text("确定"),
-                onPressed: () {
-//TODO
+                onPressed: () async {
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.setString('host',_host_controller.text);
+                  Navigator.of(context).pop();
                 },
               )
             ]));
