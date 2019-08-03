@@ -2,7 +2,7 @@
 
 ESP8266 Controller for esp01-relay
 Support Android and iOS
-![image](./esp01-relay.png)
+![image](./images/esp01-relay.png)
 ## Getting Started
 
 This project is a starting point for a Flutter application.
