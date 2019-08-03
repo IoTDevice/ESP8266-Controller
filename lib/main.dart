@@ -25,11 +25,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool led1 = false;
+  bool led2 = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: (){
+//              TODO Setting
+            },
+          )
+        ],
       ),
       body: Center(
         child: Column(
@@ -37,6 +47,44 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               'ESP8266-Controller',
+            ),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('LED1'),
+                  Switch(
+                    onChanged: (_){
+//                      TODO http request
+                      setState(() {
+                        led1 = !led1;
+                      });
+                    },
+                    value: led1,
+                    activeColor: Colors.green,
+                    inactiveThumbColor: Colors.red,
+                  ),
+                ],
+              ),
+            ),
+            Center(
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('LED2'),
+                  Switch(
+                    onChanged: (_){
+                      //                      TODO http request
+                      setState(() {
+                        led2 = !led2;
+                      });
+                    },
+                    value: led2,
+                    activeColor: Colors.green,
+                    inactiveThumbColor: Colors.red,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
