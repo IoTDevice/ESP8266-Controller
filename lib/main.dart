@@ -125,8 +125,11 @@ class _MyHomePageState extends State<MyHomePage> {
     }else {
       url = 'http://$host/?pin=OFF$led';
     }
-    //TODO exception
-    await http.get(url);
+    try {
+      await http.get(url);
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   _launchURL(String url) async {
