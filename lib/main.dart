@@ -64,11 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('LED1'),
                   Switch(
                     onChanged: (_){
-                      ChangeLEDStatus(1,!led1).then((_){
-                        setState(() {
-                          led1 = !led1;
-                        });
-                      });
+                      ChangeLEDStatus(1,!led1);
                     },
                     value: led1,
                     activeColor: Colors.green,
@@ -84,11 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('LED2'),
                   Switch(
                     onChanged: (_){
-                      ChangeLEDStatus(2,!led2).then((_){
-                        setState(() {
-                          led2 = !led2;
-                        });
-                      });
+                      ChangeLEDStatus(2,!led2);
                     },
                     value: led2,
                     activeColor: Colors.green,
@@ -108,13 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String host = prefs.getString("host")??'';
     if (host == ''){
-      setState(() {
-        if(led == 1){
-          led1 = !led1;
-        }else{
-          led2 = !led2;
-        }
-      });
       return _setHost();
     }
     //  /?pin=OFF2
@@ -126,9 +111,35 @@ class _MyHomePageState extends State<MyHomePage> {
       url = 'http://$host/?pin=OFF$led';
     }
     try {
-      await http.get(url);
+      await http.get(url).timeout(const Duration(seconds: 2));
+      setState(() {
+        if(led == 1){
+          led1 = !led1;
+        }else{
+          led2 = !led2;
+        }
+      });
     }catch(e){
       print(e.toString());
+      return showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+              title: Text("出错！"),
+              content: ListView(
+                children: <Widget>[
+                  Text("请检查ESP8266 IP：$host的正确性，确认端口80已经打开！"),
+                ],
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("确定"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+          ),
+      );
     }
   }
 
