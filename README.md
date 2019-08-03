@@ -5,6 +5,7 @@ Support Android and iOS
 > lua file in ./lua_code_for_nodemcu dir  
 
 ![image](./images/esp01-relay.png)
+![image](./images/screen.png)
 ## Getting Started
 
 This project is a starting point for a Flutter application.
