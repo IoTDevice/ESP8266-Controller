@@ -2,7 +2,7 @@
 
 ESP8266 Controller for esp01-relay
 Support Android and iOS
-> lua file in ./lua_code_for_nodemcu dir  
+> firmware file in ./firmware dir,support nodemcu and arduino
 
 ![image](./images/esp01-relay.png)
 ![image](./images/screen.png)
