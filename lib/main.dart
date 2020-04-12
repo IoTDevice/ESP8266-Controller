@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:android_intent/android_intent.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() => runApp(MyApp());
 
@@ -144,11 +144,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _launchURL(String url) async {
-    AndroidIntent intent = AndroidIntent(
-      action: 'action_view',
-      data: url,
-    );
-    await intent.launch();
+//    await intent.launch();
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('Could not launch $url');
+    }
   }
 
   _setHost() async {

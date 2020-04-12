@@ -26,7 +26,8 @@ dependencies:
 
   http: ^0.12.0+2
   shared_preferences: ^0.5.3+4
-  android_intent: ^0.3.0+2
+  #  打开url
+  url_launcher: ^5.0.2
 
 dev_dependencies:
   flutter_test:
